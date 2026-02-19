@@ -1,49 +1,49 @@
-# `ROBERT.md`
+# 🪼 ROBERT.md (rules for any AI that dares to co-work with me)
 
-AI coding assistants are converging on a simple idea: a markdown file that tells them who you are and how you work. The format varies — `CLAUDE.md`, `AGENTS.md`, `SOUL.md` — but the pattern is the same. And it's not going away.
+I've been watching everyone figure out how to talk to their AI coding assistants, and nobody agrees on how much you actually need to say.
 
-Robert ran into a practical question: when you work across many projects, where do these files actually live? Copying them into every repo means drift. Putting everything into a single project means it's stuck there. And personal preferences (how I talk, how I think about code) are different from company conventions, which are different from project-specific context.
+[Boris Cherny](https://www.threads.com/@boris_cherny/post/DTBVlMIkpcm), who created Claude Code, says his setup is "surprisingly vanilla" — the model already knows how to code, so he barely customizes it. [Peter Steinberger](https://steipete.me/posts/2026/openclaw) went the other direction with [OpenClaw](https://github.com/openclaw/openclaw): give your agent a `SOUL.md` — a personality, opinions, a voice — because a good assistant shouldn't sound like a corporate chatbot. Meanwhile, every tool is shipping its own flavor: `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `copilot-instructions.md`. Vendor-specific files that are quietly becoming an industry standard.
 
-This repo is the answer. One place for the stuff that's *mine* — version-controlled, symlinked into `~/.claude/`, and portable to whatever tool comes next.
+This repo is me trying to make sense of all of that. One place for the stuff that's *mine* — how I think, how I code, what I expect — version-controlled, symlinked into `~/.claude/`, and portable to whatever tool comes next.
 
 ## The layers
 
-Not everything belongs in the same place. AI assistants work best when context is layered:
+The hard part isn't *what* to put in these files — it's *where*. What's mine is different from what's [Aquiva](https://aquivalabs.com)'s, which is different from what a specific project needs.
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│  Personal (this repo)                                        │
-│  Who I am. How I communicate. My coding philosophy.          │
+│  Me (this repo)                                              │
+│  How I talk. How I code. What annoys me.                     │
 │  → SOUL.md, CLAUDE.md, rules/salesforce/                     │
 │                                                              │
 │  ┌────────────────────────────────────────────────────────┐  │
-│  │  Company (separate private repo)                       │  │
-│  │  Shared skills. Company-specific workflows.            │  │
+│  │  Aquiva (separate private repo)                        │  │
+│  │  Shared conventions. Company-wide skills & workflows.  │  │
 │  │                                                        │  │
 │  │  ┌──────────────────────────────────────────────────┐  │  │
 │  │  │  Project (each repo)                             │  │  │
-│  │  │  Domain model. Features. Project-specific skills.│  │  │
+│  │  │  Domain model. Features. Project-specific stuff. │  │  │
 │  │  │  → CLAUDE.md, AGENTS.md, .claude/skills/         │  │  │
 │  │  └──────────────────────────────────────────────────┘  │  │
 │  └────────────────────────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-Tools like Claude Code [merge all layers](https://code.claude.com/docs/en/best-practices) at session start. Nothing overrides — it all stacks.
+Claude Code [merges all of this](https://code.claude.com/docs/en/best-practices) at session start. Nothing overrides — it all stacks.
 
-## What's in this repo
+## What's in here
 
-**`SOUL.md`** — My personality. How I want the assistant to communicate: conversational, concise, witty, no fluff. Tool-agnostic — lives at the root so any AI tool can find it. Inspired by [Peter Steinberger's OpenClaw](https://github.com/openclaw/openclaw).
+**[`SOUL.md`](SOUL.md)** — Codes my style. Snarky, German, no fluff. So the AI talks like a sharp colleague, not a support bot. Tool-agnostic — lives at the root so any AI tool can find it. Inspired by [Peter Steinberger's OpenClaw](https://github.com/openclaw/openclaw).
 
-**`claude/CLAUDE.md`** — My coding philosophy. Readability over cleverness, simplicity over sophistication, tests as documentation.
+**[`claude/CLAUDE.md`](claude/CLAUDE.md)** — My five coding commandments. Non-negotiable.
 
-**`claude/rules/salesforce/`** — My Salesforce/Apex coding standards. Scoped via `paths:` frontmatter — only activates for `.cls`, `.trigger`, and metadata files. Other languages get their own folder.
+**[`claude/rules/salesforce/`](claude/rules/salesforce/)** — My brutal, PMD-backed Apex standards. The machine checks what I forget.
 
-**`claude/settings.json`** — Pre-approved tools and permissions so Claude doesn't ask for every web search or git push.
+**[`claude/settings.json`](claude/settings.json)** — So Claude stops nagging me for permission before every git push.
 
-## How it works
+## How I use it
 
-The `install.sh` script symlinks this repo into `~/.claude/`, where Claude Code reads configuration at session start.
+I run [`install.sh`](install.sh) once. It symlinks everything into `~/.claude/`, where Claude Code picks it up at session start.
 
 ```bash
 ./install.sh
@@ -55,4 +55,4 @@ The `install.sh` script symlinks this repo into `~/.claude/`, where Claude Code 
 ~/.claude/rules/         →  this repo/claude/rules/
 ```
 
-After pulling changes, Claude picks them up in the next session automatically — symlinks always point to the latest version.
+After I pull changes, the next session gets them automatically — symlinks always point to the latest version.
