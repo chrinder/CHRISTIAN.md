@@ -9,6 +9,8 @@ paths:
 
 # Salesforce / Apex Coding Standards
 
+**MANDATORY: After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, run `/sf-code-analyzer` on the changed files before considering the task done.**
+
 ## Core Principles
 
 These principles are non-negotiable. Many are enforced by PMD rules.
@@ -303,5 +305,6 @@ A custom PMD ruleset (`pmd-ruleset.xml`) enforces many patterns. These rules are
 
 1. **Build Core Components** - Follow coding standards, place code in `force-app/main/default/classes/`
 2. **Create Tests** - Cover business logic, edge cases, error handling
-3. **Test and Deploy** - Run tests with Salesforce CLI, deploy, validate
-4. **Iterate** - Gather feedback, refine while maintaining standards
+3. **Scan** - After modifying `.cls`, `.trigger`, or `*-meta.xml` files, run `/sf-code-analyzer` on the changed files before considering the task done
+4. **Test and Deploy** - Run tests with Salesforce CLI, deploy, validate
+5. **Iterate** - Gather feedback, refine while maintaining standards
