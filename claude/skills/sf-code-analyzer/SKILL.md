@@ -46,7 +46,7 @@ sf code-analyzer run --rule-selector "Recommended:Security" "AppExchange" "flow"
 Uses the bundled [pmd-ruleset.xml](pmd-ruleset.xml) via [code-analyzer.yaml](code-analyzer.yaml).
 
 ```bash
-sf code-analyzer run --rule-selector "PMD:OpinionatedSalesforce" --output-file security-review/scans/code-analyzer-cleancode.csv --target <TARGET>
+sf code-analyzer run --rule-selector "PMD:OpinionatedSalesforce" --output-file code-analyzer-cleancode.csv --target <TARGET>
 ```
 
 ## After scanning
