@@ -1,4 +1,5 @@
-# 🪼 ROBERT.md (rules for any AI that dares to co-work with me)
+# 🪼 ROBERT.md
+#### (rules for any AI that dares to co-work with me)
 
 I've been watching everyone figure out how to talk to their AI coding assistants, and nobody agrees on how much you actually need to say.
 
