@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(git *)",
+      "Bash(sf *)",
+      "Bash(npm *)",
+      "Bash(gh *)",
+      "mcp__voicemode__converse",
+      "mcp__voicemode__service"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
