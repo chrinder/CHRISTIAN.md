@@ -33,13 +33,23 @@ Claude Code [merges all of this](https://code.claude.com/docs/en/best-practices)
 
 ## What's in here
 
+### Instructions
+
 **[`SOUL.md`](SOUL.md)** — Codes my style. Snarky, German, no fluff. So the AI talks like a sharp colleague, not a support bot. Tool-agnostic — lives at the root so any AI tool can find it. Inspired by [Peter Steinberger's OpenClaw](https://github.com/openclaw/openclaw).
 
 **[`claude/CLAUDE.md`](claude/CLAUDE.md)** — My five coding commandments. Non-negotiable.
 
-**[`claude/rules/salesforce/`](claude/rules/salesforce/)** — My brutal, PMD-backed Apex standards. The machine checks what I forget.
+**[`claude/rules/salesforce/`](claude/rules/salesforce/)** — My brutal, [PMD-backed](claude/skills/sf-code-analyzer/pmd-ruleset.xml) Apex standards. The machine checks what I forget.
 
 **[`claude/settings.json`](claude/settings.json)** — So Claude stops nagging me for permission before every git push.
+
+### Skills
+
+Reusable capabilities that Claude can trigger automatically or I can invoke with `/skillname`. Lives in [`claude/skills/`](claude/skills/).
+
+**[`sf-code-analyzer`](claude/skills/sf-code-analyzer/)** — Runs Salesforce Code Analyzer after code changes. Smart enough to detect managed packages (via `sfdx-project.json`) and only run AppExchange security rules when they matter. Otherwise just my opinionated clean code rules.
+
+**[`agentforce`](claude/skills/agentforce/)** — Full Agent Script reference for building Agentforce agents. Condensed DSL guide, known beta issues, and links to official docs — so Claude actually knows the syntax instead of hallucinating it.
 
 ## How I use it
 
@@ -53,6 +63,7 @@ I run [`install.sh`](install.sh) once. It symlinks everything into `~/.claude/`,
 ~/.claude/CLAUDE.md      →  this repo/claude/CLAUDE.md
 ~/.claude/settings.json  →  this repo/claude/settings.json
 ~/.claude/rules/         →  this repo/claude/rules/
+~/.claude/skills/        →  this repo/claude/skills/
 ```
 
 After I pull changes, the next session gets them automatically — symlinks always point to the latest version.
