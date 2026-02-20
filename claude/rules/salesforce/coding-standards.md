@@ -9,11 +9,11 @@ paths:
 
 # Salesforce / Apex Coding Standards
 
-**MANDATORY: After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, run `/sf-code-analyzer` on the changed files before considering the task done.**
+## Verification
+
+Many of these principles are enforced by a [custom PMD ruleset](../skills/sf-code-analyzer/pmd-ruleset.xml) via `/sf-code-analyzer`. **After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, run `/sf-code-analyzer` on the changed files before considering the task done.**
 
 ## Core Principles
-
-These principles are non-negotiable. Many are enforced by PMD rules.
 
 ### One Return Per Method
 
@@ -324,35 +324,4 @@ No `get` prefix:
 
 - Bad: `getAge()`, `getName()`
 - Good: `age()`, `name()`
-
-## PMD Rules
-
-A custom PMD ruleset (`pmd-ruleset.xml`) enforces patterns machine-checked by `/sf-code-analyzer`:
-
-**Apex Logic**
-- **OnlyOneReturnPerMethod** - Methods must have exactly one return statement
-- **DeclareWhatYouReturnFirstAndCallItResult** - Return variable must be named `result`
-- **UnneededUseOfThisReducesReadability** - Don't use `this.` unless required
-- **NullValueCheckBeforeEmptyCheck** - Check `!= null` before `.isEmpty()`
-- **PreferRealObjectsOverStaticHelpers** - Avoid classes with only static methods
-- **ClassNamesBecomeSelfFulfillingProphecies** - No `Service`, `Handler`, `Manager`, `Helper`, `Util`, `Wrapper` suffixes
-- **GetPrefixIsJustNoise** - Method names: `account.name()` not `account.getName()`
-
-**Tests**
-- **TestsShouldNotStartWithTest** - Test method names must not start with "test"
-- **TestClassesMustEndWithUnderscoreTest** - Test classes must have `_Test` suffix
-- **TestClassesShouldBePrivate** - Test classes must be `private`
-- **UseModernAssertClass** - Use `Assert.*` not `System.assert`
-- **AssertionsShouldNotHaveMessages** - No message parameters on assertions
-- **CommentsOftenExcuseForBadCodeAndTests** - No formal JavaDoc/ApexDoc comments
-- **CheckIfProperFalsePositive** - PMD suppressions must have explanatory comments
-
-**Code Quality**
-- **DebugsNeedALoggingLevel** - Debug statements must specify a logging level
-
-**Metadata**
-- **MetadataRequiresDescription** - Custom objects/fields need descriptions
-- **BumpApiVersion** - Use latest API version in metadata
-- **DMLStatementInFlowLoop** - No DML inside Flow loops
-
 
