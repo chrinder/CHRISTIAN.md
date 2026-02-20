@@ -6,6 +6,8 @@
 4. **Tests as documentation** - Test class + method name reads as a sentence describing behavior.
 5. **Leverage existing solutions** - Don't reinvent. Use the libraries provided.
 
-## Post-Write Rule
+## Language-Specific Rules
 
-After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, always run `/sf-code-analyzer` on the changed files before considering the task complete.
+When working in a project that matches a language below, follow the corresponding coding standards in `rules/` — including any mandatory post-write checks they define.
+
+- **Salesforce** (Apex, Triggers, Metadata) → `rules/salesforce/coding-standards.md`

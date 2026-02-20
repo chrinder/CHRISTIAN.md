@@ -17,7 +17,9 @@ These principles are non-negotiable. Many are enforced by PMD rules.
 
 ### One Return Per Method
 
-Methods have exactly one `return` statement at the end. Use the `result` variable pattern:
+Methods have exactly one `return` statement at the end. Use the `result` variable pattern.
+
+(Checked by custom PMD rule: [`OnlyOneReturnPerMethod`](../skills/sf-code-analyzer/pmd-ruleset.xml) and [`DeclareWhatYouReturnFirstAndCallItResult`](../skills/sf-code-analyzer/pmd-ruleset.xml))
 
 ```java
 private List<Account> findAccounts(String name) {
@@ -39,13 +41,38 @@ Never use: `Service`, `Handler`, `Manager`, `Helper`, `Util`, `Wrapper`
 
 These names hide intent. Use domain names that reveal what the class represents.
 
-### No Formal Comments
-No JavaDoc/ApexDoc `/** */` comments. If code needs explanation, the code is unclear. Write clearer code. Write better tests.
+(Checked by custom PMD rule: [`ClassNamesBecomeSelfFulfillingProphecies`](../skills/sf-code-analyzer/pmd-ruleset.xml))
+
+### Comments: When Forbidden, When Required
+
+No formal JavaDoc/ApexDoc `/** */` comments. If code needs explanation, the code is unclear. Write clearer code. Write better tests.
+
+However, there are exactly two exceptions where `// Note:` comments ARE required:
+
+1. **Strange code that must be that way** — Code that violates normal conventions but is necessary. Explain why it's an exception.
+2. **PMD suppressions** — Every `@SuppressWarnings` must have a `// Note:` comment explaining why the rule is being skipped.
+
+(Checked by custom PMD rules: [`CommentsOftenExcuseForBadCodeAndTests`](../skills/sf-code-analyzer/pmd-ruleset.xml) and [`CheckIfProperFalsePositive`](../skills/sf-code-analyzer/pmd-ruleset.xml))
+
+Examples:
+
+```java
+// Note: without sharing required to access org-wide data
+public without sharing class ReportGenerator {
+    ...
+}
+
+// Note: Input is required=true in schema — Agentforce won't call without it
+@SuppressWarnings('PMD.MissingNullCheckOnSoqlVariable')
+private static List<Account> fetchAccounts() { ... }
+```
 
 ### Tests Don't Start With "test"
 Test method names describe behavior. Class + method reads as sentence:
 
 - `Calculator_Test.multipliesTwoIntegers()` → "Calculator multiplies two integers"
+
+(Checked by custom PMD rule: [`TestsShouldNotStartWithTest`](../skills/sf-code-analyzer/pmd-ruleset.xml))
 
 ### Test Method Names Describe What Is Asserted
 
@@ -54,9 +81,46 @@ The method name states exactly what the test verifies. The assertion should matc
 - Good: `returnsOverdueTasksFirst()` with `Assert.areEqual('Overdue Task', tasks[0].Name)`
 - Bad: `testPrioritization()` with multiple unrelated assertions
 
-### Deviations Need Explanation
+### Use Salesforce Standards, Don't Reinvent
 
-When you deviate from defaults (`without sharing`, `global`, PMD suppression), add a `// Note:` comment explaining why.
+Don't invent workarounds for problems Salesforce already solved. Use the built-in features:
+
+
+
+- Named Credentials (not Custom Settings for authentication)
+- Platform Events (not custom polling mechanisms)
+- Salesforce-native configuration over custom metadata
+
+### Test Isolation — Every Test Stands Alone
+
+Each test method must be completely isolated. No shared state, no global test variables, no `@TestSetup`.
+
+Setup code belongs in the test method itself, called via a helper method:
+
+```java
+@IsTest
+private class MyClass_Test {
+
+    @IsTest
+    private static void someTestBehavior() {
+
+        // Setup
+        setup();
+
+        // Exercise
+        ...
+
+        // Verify
+        ...
+    }
+
+    // HELPER
+
+    private static void setup() {
+        ...
+    }
+}
+```
 
 ## Project Structure
 
@@ -168,10 +232,17 @@ private class ClassName_Test {
 ```
 
 ### No Assertion Messages
-Assertions have no message parameter. The test method name explains what is being verified:
 
-- Good: `Assert.areEqual('expected', actual)`
-- Bad: `Assert.areEqual('expected', actual, 'Should return expected value')`
+Assertions have no message parameter. This is a red flag: if you need a message to explain what an assertion does, your test method is doing too much.
+
+The test method name should fully describe what is being verified. One assertion per test, or a tightly related set. If you're writing assertion messages, break the test into smaller, more focused tests:
+
+- Bad: `testUserCreation()` with `Assert.areEqual(user.status, 'active', 'User should have active status')`
+  - Problem: One method testing multiple things (creation, status, ...)
+  - Needs a message because the name doesn't say what's being verified
+
+- Good: `createsUserWithActiveStatus()` with `Assert.areEqual('active', user.status)`
+  - The method name is explicit. The assertion is obvious. No message needed.
 
 ### Method Chaining Alignment
 
@@ -240,7 +311,7 @@ global with sharing class VerbNounAction {
 | Element | Convention | Example |
 |---------|------------|---------|
 | Custom Objects | PascalCase, no underscores | `ContactSkill__c` |
-| Custom Fields | camelCase, no underscores | `skillLevel__c` |
+| Custom Fields | camelCase, no underscores | `SkillLevel__c` |
 | Triggers | Plural object name | `Contacts.trigger` |
 | Test Classes | `_Test` suffix | `Pricing_Test.cls` |
 | Controllers | `Ctrl` suffix | `AccountListCtrl` |
@@ -254,57 +325,34 @@ No `get` prefix:
 - Bad: `getAge()`, `getName()`
 - Good: `age()`, `name()`
 
-## Access Modifiers
-
-| Type | Access | Sharing |
-|------|--------|---------|
-| Regular class | `public` | `with sharing` |
-| Test class | `private` | - |
-| Invocable | `global` | `with sharing` |
-| Controller | `public` | `with sharing` |
-
 ## PMD Rules
 
-A custom PMD ruleset (`pmd-ruleset.xml`) enforces many patterns. These rules are machine-checked:
+A custom PMD ruleset (`pmd-ruleset.xml`) enforces patterns machine-checked by `/sf-code-analyzer`:
 
+**Apex Logic**
 - **OnlyOneReturnPerMethod** - Methods must have exactly one return statement
 - **DeclareWhatYouReturnFirstAndCallItResult** - Return variable must be named `result`
-- **TestsShouldNotStartWithTest** - Test method names must not start with "test"
 - **UnneededUseOfThisReducesReadability** - Don't use `this.` unless required
-- **CommentsOftenExcuseForBadCodeAndTests** - No formal JavaDoc/ApexDoc comments
-- **PreferRealObjectsOverStaticHelpers** - Avoid classes with only static methods
-- **CheckIfProperFalsePositive** - PMD suppressions need explanatory comments
-- **MetadataRequiresDescription** - Custom objects/fields need descriptions
 - **NullValueCheckBeforeEmptyCheck** - Check `!= null` before `.isEmpty()`
+- **PreferRealObjectsOverStaticHelpers** - Avoid classes with only static methods
+- **ClassNamesBecomeSelfFulfillingProphecies** - No `Service`, `Handler`, `Manager`, `Helper`, `Util`, `Wrapper` suffixes
+- **GetPrefixIsJustNoise** - Method names: `account.name()` not `account.getName()`
 
-## What NOT to Do
+**Tests**
+- **TestsShouldNotStartWithTest** - Test method names must not start with "test"
+- **TestClassesMustEndWithUnderscoreTest** - Test classes must have `_Test` suffix
+- **TestClassesShouldBePrivate** - Test classes must be `private`
+- **UseModernAssertClass** - Use `Assert.*` not `System.assert`
+- **AssertionsShouldNotHaveMessages** - No message parameters on assertions
+- **CommentsOftenExcuseForBadCodeAndTests** - No formal JavaDoc/ApexDoc comments
+- **CheckIfProperFalsePositive** - PMD suppressions must have explanatory comments
 
-- No formal JavaDoc/ApexDoc `/** */` comments
-- No `this.` prefix unless required for disambiguation
-- No multiple returns per method
-- No test methods starting with "test"
-- No underscores in class names except `_Test` and `_t`
-- No `@TestSetup` unless absolutely necessary
-- No shared/global test variables
-- No storing credentials in Custom Settings or Metadata
-- No `Service`, `Handler`, `Manager`, `Helper`, `Util` suffixes
+**Code Quality**
+- **DebugsNeedALoggingLevel** - Debug statements must specify a logging level
 
-## Development Process
+**Metadata**
+- **MetadataRequiresDescription** - Custom objects/fields need descriptions
+- **BumpApiVersion** - Use latest API version in metadata
+- **DMLStatementInFlowLoop** - No DML inside Flow loops
 
-### Phase 1: Environment Setup & Requirements Gathering
 
-1. **Propose Development Environment** - Suggest scratch org creation using `sf org create scratch`
-2. **Understand Requirements** - Ask specific questions, request SOW or contract details, clarify domain and priorities
-
-### Phase 2: Solution Planning
-
-1. **Read and Analyze** - Study existing patterns before proposing solutions
-2. **Design Solution** - Follow established patterns, plan complete features including tests
-
-### Phase 3: Iterative Implementation
-
-1. **Build Core Components** - Follow coding standards, place code in `force-app/main/default/classes/`
-2. **Create Tests** - Cover business logic, edge cases, error handling
-3. **Scan** - After modifying `.cls`, `.trigger`, or `*-meta.xml` files, run `/sf-code-analyzer` on the changed files before considering the task done
-4. **Test and Deploy** - Run tests with Salesforce CLI, deploy, validate
-5. **Iterate** - Gather feedback, refine while maintaining standards

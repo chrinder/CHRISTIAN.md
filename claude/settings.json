@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "WebSearch",
@@ -8,10 +11,9 @@
       "Bash(npm *)",
       "Bash(gh *)",
       "mcp__voicemode__converse",
-      "mcp__voicemode__service"
+      "mcp__voicemode__service",
+      "Skill(sf-code-analyzer)",
+      "Skill(sf-code-analyzer:*)"
     ]
-  },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   }
 }
