@@ -1,2 +1,5 @@
 model = "gpt-5.3-codex"
-model_reasoning_effort = "high"
+model_reasoning_effort = "low"
+
+[projects."/Users/christiananderson/Developer/CodexProjects/dunnage-reporting"]
+trust_level = "trusted"
