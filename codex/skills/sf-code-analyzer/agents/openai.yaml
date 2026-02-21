@@ -1,0 +1,4 @@
+interface:
+  display_name: "Salesforce Code Analyzer"
+  short_description: "Scan Apex, metadata, and Flow quality"
+  default_prompt: "Use $sf-code-analyzer to run Salesforce clean-code and security analysis on changed files."

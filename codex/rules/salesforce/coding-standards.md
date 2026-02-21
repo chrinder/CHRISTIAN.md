@@ -11,7 +11,7 @@ paths:
 
 ## Verification
 
-Many of these principles are enforced by a [custom PMD ruleset](../../skills/sf-code-analyzer/pmd-ruleset.xml) via `/sf-code-analyzer`. **After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, run `/sf-code-analyzer` on the changed files before considering the task done.**
+Many of these principles are enforced by a [custom PMD ruleset](../../skills/sf-code-analyzer/pmd-ruleset.xml) via the `sf-code-analyzer` skill. **After creating or modifying any `.cls`, `.trigger`, or `*-meta.xml` file, run the `sf-code-analyzer` skill on the changed files before considering the task done.**
 
 ## Core Principles
 
@@ -324,4 +324,3 @@ No `get` prefix:
 
 - Bad: `getAge()`, `getName()`
 - Good: `age()`, `name()`
-

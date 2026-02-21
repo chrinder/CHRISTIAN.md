@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-Personal AI assistant configuration for Claude Code. Contains personality, coding philosophy, language-specific rules, and tool permissions — all symlinked into `~/.claude/` so every Claude Code session picks them up.
+Personal AI assistant configuration for Claude Code. Contains personality, coding philosophy, language-specific rules, tool permissions, and reusable skills — all symlinked into `~/.claude/` so every Claude Code session picks them up.
 
 This is a dotfiles repo, not a software project. There is no build, test, or lint step.
 
@@ -14,7 +14,7 @@ This is a dotfiles repo, not a software project. There is no build, test, or lin
 ./install.sh
 ```
 
-Creates symlinks: `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/rules/` all point back here.
+Creates symlinks: `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/rules/`, and `~/.claude/skills/` all point back here.
 
 ## Structure
 
@@ -22,6 +22,7 @@ Creates symlinks: `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/r
 - **`claude/CLAUDE.md`** — Global coding philosophy (symlinked to `~/.claude/CLAUDE.md`). Applies to all projects.
 - **`claude/settings.json`** — Pre-approved permissions and env vars (symlinked to `~/.claude/settings.json`).
 - **`claude/rules/`** — Language-specific coding standards, scoped via `paths:` frontmatter. Currently only `salesforce/coding-standards.md`. Each language gets its own subfolder.
+- **`claude/skills/`** — Reusable capabilities Claude can invoke (symlinked to `~/.claude/skills/`).
 
 ## Layering Model
 
