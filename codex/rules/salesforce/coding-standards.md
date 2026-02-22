@@ -68,9 +68,10 @@ private static List<Account> fetchAccounts() { ... }
 ```
 
 ### Tests Don't Start With "test"
+
 Test method names describe behavior. Class + method reads as sentence:
 
-- `Calculator_Test.multipliesTwoIntegers()` → "Calculator multiplies two integers"
+- `CalculatorTest.multipliesTwoIntegers()` → "Calculator multiplies two integers"
 
 (Checked by custom PMD rule: [`TestsShouldNotStartWithTest`](../../skills/sf-code-analyzer/pmd-ruleset.xml))
 
@@ -84,8 +85,6 @@ The method name states exactly what the test verifies. The assertion should matc
 ### Use Salesforce Standards, Don't Reinvent
 
 Don't invent workarounds for problems Salesforce already solved. Use the built-in features:
-
-
 
 - Named Credentials (not Custom Settings for authentication)
 - Platform Events (not custom polling mechanisms)
@@ -185,7 +184,7 @@ Three section comments only: `// Setup`, `// Exercise`, `// Verify`. No other co
 
 ```java
 @IsTest
-private class ClassName_Test {
+private class ClassNameTest {
 
 
     @IsTest
@@ -308,15 +307,15 @@ global with sharing class VerbNounAction {
 
 ## Naming Conventions
 
-| Element | Convention | Example |
-|---------|------------|---------|
-| Custom Objects | PascalCase, no underscores | `ContactSkill__c` |
-| Custom Fields | camelCase, no underscores | `SkillLevel__c` |
-| Triggers | Plural object name | `Contacts.trigger` |
-| Test Classes | `_Test` suffix | `Pricing_Test.cls` |
-| Controllers | `Ctrl` suffix | `AccountListCtrl` |
-| Domain Builders (standard) | `_t` suffix | `Account_t`, `User_t` |
-| Domain Builders (custom) | No suffix | `Project`, `Task` |
+| Element                    | Convention                  | Example               |
+| -------------------------- | --------------------------- | --------------------- |
+| Custom Objects             | PascalCase, no underscores  | `ContactSkill__c`     |
+| Custom Fields              | PascalCase, with underscore | `Skill_Level__c`      |
+| Triggers                   | Plural object name          | `Contacts.trigger`    |
+| Test Classes               | `Test` suffix               | `PricingTest.cls`     |
+| Controllers                | `Ctrl` suffix               | `AccountListCtrl`     |
+| Domain Builders (standard) | `_t` suffix                 | `Account_t`, `User_t` |
+| Domain Builders (custom)   | No suffix                   | `Project`, `Task`     |
 
 ### Methods
 
