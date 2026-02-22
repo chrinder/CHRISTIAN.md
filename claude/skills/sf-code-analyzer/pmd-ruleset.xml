@@ -219,13 +219,13 @@
         ]]></value></property></properties>
     </rule>
 
-    <rule name="TestClassesMustEndWithUnderscoreTest" language="apex" message="Test classes must end with _Test suffix" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <rule name="TestClassesMustEndWithTest" language="apex" message="Test classes must end with Test suffix" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <priority>3</priority>
         <properties><property name="xpath"><value><![CDATA[
 
             //UserClass[
                 ModifierNode/Annotation[@Image='IsTest']
-                and not(ends-with(@Image, '_Test'))
+                and not(ends-with(@Image, 'Test'))
             ]
 
         ]]></value></property></properties>
